@@ -26,14 +26,14 @@ function parseBoolean(arg){
 
 
 app.get('/screenshot', async (req, res) => {
-    const url = req.query.url;
+    let url = req.query.url;
     if (!url) {
         res.status(400).send('URL is required');
         return;
     }
-
+    //做一次解码，外部最好做一次编码，避免目标url的参数变成服务参数
+    url = decodeURIComponent(url);
     const fullPage = req.query.fullPage;
-    Boolean.
     console.log("fullPage="+fullPage);
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
