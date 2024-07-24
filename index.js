@@ -19,6 +19,11 @@ function getLocalIP() {
   return 'localhost';  
 }
 
+function parseBoolean(arg){
+    let strArg = arg.toString();
+    return strArg.toLowerCase() == "true" || strArg == "1"; 
+}
+
 
 app.get('/screenshot', async (req, res) => {
     const url = req.query.url;
@@ -27,6 +32,9 @@ app.get('/screenshot', async (req, res) => {
         return;
     }
 
+    const fullPage = req.query.fullPage;
+    Boolean.
+    console.log("fullPage="+fullPage);
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     page.setDefaultTimeout(timeout);
@@ -35,7 +43,7 @@ app.get('/screenshot', async (req, res) => {
     try {
         await page.goto(url, {waitUntil: 'networkidle2','timeout': timeout});
         await page.waitForNetworkIdle({'timeout': timeout});
-        const screenshot = await page.screenshot({fullPage: true});
+        const screenshot = await page.screenshot({fullPage: parseBoolean(fullPage)});
         res.type('image/png');
         res.send(screenshot);
     } catch (e) {
